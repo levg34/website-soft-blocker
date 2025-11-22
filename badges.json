@@ -1,0 +1,203 @@
+
+[
+  {
+    "id": "first-close",
+    "title": "First Close",
+    "description": "Close the reminder page for the first time.",
+    "category": "firsts",
+    "points": 10,
+    "criteria": {
+      "type": "closes_total",
+      "threshold": 1
+    }
+  },
+  {
+    "id": "10-closes",
+    "title": "10 Closes",
+    "description": "Close the reminder page 10 times.",
+    "category": "progress",
+    "points": 20,
+    "criteria": {
+      "type": "closes_total",
+      "threshold": 10
+    }
+  },
+  {
+    "id": "50-closes",
+    "title": "50 Closes",
+    "description": "Close the reminder page 50 times.",
+    "category": "progress",
+    "points": 40,
+    "criteria": {
+      "type": "closes_total",
+      "threshold": 50
+    }
+  },
+  {
+    "id": "100-closes",
+    "title": "100 Closes",
+    "description": "Close the reminder page 100 times.",
+    "category": "progress",
+    "points": 80,
+    "criteria": {
+      "type": "closes_total",
+      "threshold": 100
+    }
+  },
+  {
+    "id": "close-streak-3",
+    "title": "3-Day Close Streak",
+    "description": "Close the reminder at least once per day for 3 consecutive days.",
+    "category": "streak",
+    "points": 25,
+    "criteria": {
+      "type": "close_streak_days",
+      "threshold": 3
+    }
+  },
+  {
+    "id": "close-streak-7",
+    "title": "7-Day Close Streak",
+    "description": "Close the reminder at least once per day for 7 consecutive days.",
+    "category": "streak",
+    "points": 60,
+    "criteria": {
+      "type": "close_streak_days",
+      "threshold": 7
+    }
+  },
+  {
+    "id": "close-streak-30",
+    "title": "30-Day Close Streak",
+    "description": "Close the reminder at least once per day for 30 consecutive days.",
+    "category": "streak",
+    "points": 200,
+    "criteria": {
+      "type": "close_streak_days",
+      "threshold": 30
+    }
+  },
+  {
+    "id": "first-day-no-visit",
+    "title": "First Day Without Visiting",
+    "description": "Avoid visiting the targeted site for a full 24 hours.",
+    "category": "no-visit",
+    "points": 30,
+    "criteria": {
+      "type": "days_without_visit_consecutive",
+      "threshold": 1
+    }
+  },
+  {
+    "id": "7-days-no-visit",
+    "title": "7 Days Without Visiting",
+    "description": "Avoid visiting the targeted site for 7 consecutive days.",
+    "category": "no-visit",
+    "points": 90,
+    "criteria": {
+      "type": "days_without_visit_consecutive",
+      "threshold": 7
+    }
+  },
+  {
+    "id": "30-days-no-visit",
+    "title": "30 Days Without Visiting",
+    "description": "Avoid visiting the targeted site for 30 consecutive days.",
+    "category": "no-visit",
+    "points": 300,
+    "criteria": {
+      "type": "days_without_visit_consecutive",
+      "threshold": 30
+    }
+  },
+  {
+    "id": "week-active",
+    "title": "7 Days Active",
+    "description": "Interact with the app (at least one action) on 7 different days (not necessarily consecutive).",
+    "category": "engagement",
+    "points": 20,
+    "criteria": {
+      "type": "days_active_total",
+      "threshold": 7
+    }
+  },
+  {
+    "id": "month-active",
+    "title": "30 Days Active",
+    "description": "Interact with the app on 30 different days.",
+    "category": "engagement",
+    "points": 70,
+    "criteria": {
+      "type": "days_active_total",
+      "threshold": 30
+    }
+  },
+  {
+    "id": "first-week-improvement",
+    "title": "First Week Improvement",
+    "description": "Reduce visits to the targeted site during a 7-day period compared to the previous 7-day period (>= 20% reduction).",
+    "category": "improvement",
+    "points": 50,
+    "criteria": {
+      "type": "relative_visit_reduction",
+      "threshold_percent": 20,
+      "window_days": 7
+    }
+  },
+  {
+    "id": "mindful-expert",
+    "title": "Mindful Expert",
+    "description": "Accumulate 1000 badge points in total.",
+    "category": "meta",
+    "points": 0,
+    "criteria": {
+      "type": "badge_points_total",
+      "threshold": 1000
+    }
+  },
+  {
+    "id": "first-visit-after-streak-7",
+    "title": "First Visit After 7-Day Streak",
+    "description": "The first time you visit the targeted site after maintaining a 7-day no-visit streak. (Special event badge)",
+    "category": "special",
+    "points": 5,
+    "criteria": {
+      "type": "first_visit_after_streak",
+      "streak_days": 7
+    }
+  },
+  {
+    "id": "first-visit-after-streak-30",
+    "title": "First Visit After 30-Day Streak",
+    "description": "The first time you visit the targeted site after maintaining a 30-day no-visit streak. (Special event badge)",
+    "category": "special",
+    "points": 15,
+    "criteria": {
+      "type": "first_visit_after_streak",
+      "streak_days": 30
+    }
+  },
+  {
+    "id": "first-continue-after-relapse",
+    "title": "First Continue After Relapse",
+    "description": "The first time you choose \"continue to site\" after breaking a no-visit streak of 7 days or more. Marks a relapse event.",
+    "category": "special",
+    "points": 0,
+    "criteria": {
+      "type": "first_continue_after_streak",
+      "streak_days": 7
+    }
+  },
+  {
+    "id": "resilience-after-relapse",
+    "title": "Resilience After Relapse",
+    "description": "After a relapse (visit following a streak), reduce weekly visits by 30% compared to the week before the relapse.",
+    "category": "special",
+    "points": 50,
+    "criteria": {
+      "type": "recovery_after_relapse",
+      "reduction_percent": 30,
+      "window_days": 7
+    }
+  }
+]
