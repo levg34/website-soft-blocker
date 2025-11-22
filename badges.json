@@ -1,8 +1,7 @@
-
 [
   {
     "id": "first-close",
-    "title": "First Close",
+    "title": "Curtain Raiser",
     "description": "Close the reminder page for the first time.",
     "category": "firsts",
     "points": 10,
@@ -13,7 +12,7 @@
   },
   {
     "id": "10-closes",
-    "title": "10 Closes",
+    "title": "Tenfold Will",
     "description": "Close the reminder page 10 times.",
     "category": "progress",
     "points": 20,
@@ -24,7 +23,7 @@
   },
   {
     "id": "50-closes",
-    "title": "50 Closes",
+    "title": "Fifty Fortitude",
     "description": "Close the reminder page 50 times.",
     "category": "progress",
     "points": 40,
@@ -35,7 +34,7 @@
   },
   {
     "id": "100-closes",
-    "title": "100 Closes",
+    "title": "Century Sentinel",
     "description": "Close the reminder page 100 times.",
     "category": "progress",
     "points": 80,
@@ -46,7 +45,7 @@
   },
   {
     "id": "close-streak-3",
-    "title": "3-Day Close Streak",
+    "title": "Three-Day Triumph",
     "description": "Close the reminder at least once per day for 3 consecutive days.",
     "category": "streak",
     "points": 25,
@@ -57,7 +56,7 @@
   },
   {
     "id": "close-streak-7",
-    "title": "7-Day Close Streak",
+    "title": "Week of Willpower",
     "description": "Close the reminder at least once per day for 7 consecutive days.",
     "category": "streak",
     "points": 60,
@@ -68,7 +67,7 @@
   },
   {
     "id": "close-streak-30",
-    "title": "30-Day Close Streak",
+    "title": "Month of Mastery",
     "description": "Close the reminder at least once per day for 30 consecutive days.",
     "category": "streak",
     "points": 200,
@@ -79,7 +78,7 @@
   },
   {
     "id": "first-day-no-visit",
-    "title": "First Day Without Visiting",
+    "title": "Day One Detox",
     "description": "Avoid visiting the targeted site for a full 24 hours.",
     "category": "no-visit",
     "points": 30,
@@ -90,7 +89,7 @@
   },
   {
     "id": "7-days-no-visit",
-    "title": "7 Days Without Visiting",
+    "title": "Seven-Day Serenity",
     "description": "Avoid visiting the targeted site for 7 consecutive days.",
     "category": "no-visit",
     "points": 90,
@@ -101,7 +100,7 @@
   },
   {
     "id": "30-days-no-visit",
-    "title": "30 Days Without Visiting",
+    "title": "Thirty Days Strong",
     "description": "Avoid visiting the targeted site for 30 consecutive days.",
     "category": "no-visit",
     "points": 300,
@@ -112,7 +111,7 @@
   },
   {
     "id": "week-active",
-    "title": "7 Days Active",
+    "title": "Active Week",
     "description": "Interact with the app (at least one action) on 7 different days (not necessarily consecutive).",
     "category": "engagement",
     "points": 20,
@@ -123,7 +122,7 @@
   },
   {
     "id": "month-active",
-    "title": "30 Days Active",
+    "title": "Monthly Momentum",
     "description": "Interact with the app on 30 different days.",
     "category": "engagement",
     "points": 70,
@@ -134,7 +133,7 @@
   },
   {
     "id": "first-week-improvement",
-    "title": "First Week Improvement",
+    "title": "First Week Leap",
     "description": "Reduce visits to the targeted site during a 7-day period compared to the previous 7-day period (>= 20% reduction).",
     "category": "improvement",
     "points": 50,
@@ -146,7 +145,7 @@
   },
   {
     "id": "mindful-expert",
-    "title": "Mindful Expert",
+    "title": "Mindful Maven",
     "description": "Accumulate 1000 badge points in total.",
     "category": "meta",
     "points": 0,
@@ -157,7 +156,7 @@
   },
   {
     "id": "first-visit-after-streak-7",
-    "title": "First Visit After 7-Day Streak",
+    "title": "Phoenix Return (7-day)",
     "description": "The first time you visit the targeted site after maintaining a 7-day no-visit streak. (Special event badge)",
     "category": "special",
     "points": 5,
@@ -168,7 +167,7 @@
   },
   {
     "id": "first-visit-after-streak-30",
-    "title": "First Visit After 30-Day Streak",
+    "title": "Phoenix Return (30-day)",
     "description": "The first time you visit the targeted site after maintaining a 30-day no-visit streak. (Special event badge)",
     "category": "special",
     "points": 15,
@@ -179,7 +178,7 @@
   },
   {
     "id": "first-continue-after-relapse",
-    "title": "First Continue After Relapse",
+    "title": "The Choice Moment",
     "description": "The first time you choose \"continue to site\" after breaking a no-visit streak of 7 days or more. Marks a relapse event.",
     "category": "special",
     "points": 0,
@@ -190,7 +189,7 @@
   },
   {
     "id": "resilience-after-relapse",
-    "title": "Resilience After Relapse",
+    "title": "Bounceback Badge",
     "description": "After a relapse (visit following a streak), reduce weekly visits by 30% compared to the week before the relapse.",
     "category": "special",
     "points": 50,
