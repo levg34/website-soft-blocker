@@ -48,8 +48,8 @@ This project provides a single HTML page (or small web app) that acts as an inte
 2. Preview the reminder page by opening `index.html` (if present) or by running a simple static server:
 
    ```bash
-   python3 -m http.server 8000
-   # then open http://localhost:8000 in your browser
+   # TODO
+   # then open http://localhost:wxyz in your browser
    ```
 
 3. For local testing, redirect the target domain to your machine using the `hosts` file (requires admin privileges). Example (Unix-like systems):
@@ -72,8 +72,6 @@ This project provides a single HTML page (or small web app) that acts as an inte
   - Whitelisted domains
   - Badge thresholds and reward rules
   - Session/streak rules
-
-I can add a sample `config.json` if you want a concrete starting point.
 
 ## Privacy
 
@@ -104,7 +102,7 @@ Author: `levg34` — open an issue or PR for questions and collaboration.
 
 The project is intended to evolve into a fullstack web application. Candidate frameworks/architectures under consideration include:
 
-- Remix Run v7 (RRv7)
+- React Router v7
 - TanStack Start
 - Solid Start
 
