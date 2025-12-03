@@ -1,5 +1,9 @@
 import type { Route } from './+types/home'
 
-export default function Home() {
-    return <div>Home</div>
+export async function loader({}: Route.LoaderArgs) {
+    return { loaded: true }
+}
+
+export default function Home({ loaderData }: Route.ComponentProps) {
+    return <div>Home {String(loaderData.loaded)}</div>
 }
