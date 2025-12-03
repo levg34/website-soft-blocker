@@ -5,6 +5,13 @@ import './app.css'
 
 export const links: Route.LinksFunction = () => []
 
+export function meta({}: Route.MetaArgs) {
+    return [
+        { title: 'Website soft blocker' },
+        { name: 'description', content: 'Website soft blocker! Mindful browsing.' }
+    ]
+}
+
 export function Layout({ children }: { children: React.ReactNode }) {
     return (
         <html lang="en">
