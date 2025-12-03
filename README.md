@@ -40,25 +40,25 @@ This project provides a single HTML page (or small web app) that acts as an inte
 
 1. Clone the repository:
 
-   ```bash
-   git clone https://github.com/levg34/website-soft-blocker.git
-   cd website-soft-blocker
-   ```
+    ```bash
+    git clone https://github.com/levg34/website-soft-blocker.git
+    cd website-soft-blocker
+    ```
 
 2. Preview the reminder page by opening `index.html` (if present) or by running a simple static server:
 
-   ```bash
-   # TODO
-   # then open http://localhost:wxyz in your browser
-   ```
+    ```bash
+    # TODO
+    # then open http://localhost:wxyz in your browser
+    ```
 
 3. For local testing, redirect the target domain to your machine using the `hosts` file (requires admin privileges). Example (Unix-like systems):
 
-   ```text
-   127.0.0.1  example-distracting-site.test
-   ```
+    ```text
+    127.0.0.1  example-distracting-site.test
+    ```
 
-   Serve the reminder page for that hostname, or open the page directly and simulate the behaviour.
+    Serve the reminder page for that hostname, or open the page directly and simulate the behaviour.
 
 4. In production, consider DNS or browser-extension packaging to serve the page in place of the target site.
 
@@ -68,10 +68,10 @@ This project provides a single HTML page (or small web app) that acts as an inte
 
 - Configuration can be provided through a JSON file or an in-app settings UI depending on the implementation.
 - Typical options:
-  - Target site URL
-  - Whitelisted domains
-  - Badge thresholds and reward rules
-  - Session/streak rules
+    - Target site URL
+    - Whitelisted domains
+    - Badge thresholds and reward rules
+    - Session/streak rules
 
 ## Privacy
 
@@ -80,10 +80,9 @@ User progress is stored locally by default (e.g., `localStorage`). The project d
 ## Development
 
 - Recommended workflow:
-
-  1. Branch from `main`: `git checkout -b feat/your-feature`
-  2. Run the app locally (open `index.html` or use a static server)
-  3. Open a PR with a clear description and screenshots for UI changes
+    1. Branch from `main`: `git checkout -b feat/your-feature`
+    2. Run the app locally (open `index.html` or use a static server)
+    3. Open a PR with a clear description and screenshots for UI changes
 
 - If you use a JavaScript toolchain (npm, Vite, etc.), add `package.json` scripts and document them here.
 
