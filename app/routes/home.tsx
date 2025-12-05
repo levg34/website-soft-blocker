@@ -1,8 +1,8 @@
-import { addVisit } from '~/utils/utils.server'
+import { addPageLoad } from '~/utils/utils.server'
 import type { Route } from './+types/home'
 
 export async function loader({ params }: Route.LoaderArgs) {
-    await addVisit('guest')
+    await addPageLoad()
     return { loaded: true }
 }
 

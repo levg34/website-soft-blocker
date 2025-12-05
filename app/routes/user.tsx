@@ -1,9 +1,9 @@
-import { addVisit } from '~/utils/utils.server'
+import { addPageLoad } from '~/utils/utils.server'
 import type { Route } from './+types/user'
 
 export async function loader({ params }: Route.LoaderArgs) {
     const user = params.user
-    await addVisit(user)
+    await addPageLoad(user)
     return { user }
 }
 
