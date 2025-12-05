@@ -12,9 +12,13 @@ export async function addStayeFocus(username: string, siteId: string) {
     console.log(`User ${username} stayed focused and did not visit the page ${siteId}.`)
 }
 
-export async function getUrl(username: string, siteId: string): Promise<string> {
+export async function getUserUrl(username: string, siteId: string): Promise<string> {
     // TODO: implement URL retrieval logic
     return 'https://imgur.com'
+}
+
+export async function getUserSites(user: string): Promise<string[]> {
+    return ['imgur']
 }
 
 export async function addPageLoad(username?: string, siteId?: string): Promise<void> {

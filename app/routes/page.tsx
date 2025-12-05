@@ -1,24 +1,23 @@
-import { addPageLoad, getUrl } from '~/utils/utils.server'
+import { addPageLoad, getUserUrl } from '~/utils/utils.server'
 import type { Route } from './+types/page'
 
 export async function loader({ params }: Route.LoaderArgs) {
     const user = params.user
     const site = params.site
     await addPageLoad(user, site)
-    const url = await getUrl(user, site)
+    const url = await getUserUrl(user, site)
     return { user, site, url }
 }
 
 export default function SitePage({ loaderData }: Route.ComponentProps) {
     const visitSite = async () => {
-        // TODO: log the visit on the server side
+        // await addSiteVisit(loaderData.user, loaderData.site)
         window.open(loaderData.url)
     }
 
     const stayFocused = async () => {
-        // TODO: log the stay focused action on the server side
+        // await addStayeFocus(loaderData.user, loaderData.site)
         alert('Stay focused! Closing the tab.')
-        //  close the tab
         window.close()
     }
 
