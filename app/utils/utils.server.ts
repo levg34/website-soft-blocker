@@ -12,13 +12,20 @@ export async function addStayeFocus(username: string, siteId: string) {
     console.log(`User ${username} stayed focused and did not visit the page ${siteId}.`)
 }
 
-export async function getUserUrl(username: string, siteId: string): Promise<string> {
+export async function getUserUrl(username: string, siteId: string): Promise<string | undefined> {
     // TODO: implement URL retrieval logic
-    return 'https://imgur.com'
+    const siteUrls: Record<string, string> = {
+        imgur: 'https://imgur.com',
+        example: 'https://example.com'
+    }
+
+    if (siteId in siteUrls) {
+        return siteUrls[siteId]
+    }
 }
 
 export async function getUserSites(user: string): Promise<string[]> {
-    return ['imgur']
+    return ['imgur', 'example']
 }
 
 export async function addPageLoad(username?: string, siteId?: string): Promise<void> {
