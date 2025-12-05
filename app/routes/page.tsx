@@ -5,7 +5,7 @@ export async function loader({ params }: Route.LoaderArgs) {
     const user = params.user
     const site = params.site
     await addPageLoad(user, site)
-    const url = await getUrl(site)
+    const url = await getUrl(user, site)
     return { user, site, url }
 }
 

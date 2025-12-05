@@ -9,7 +9,7 @@ export async function addSiteVisit(username: string, siteId: string) {
 
 export async function addStayeFocus(username: string, siteId: string) {}
 
-export async function getUrl(siteId: string): Promise<string> {
+export async function getUrl(username: string, siteId: string): Promise<string> {
     // TODO: implement URL retrieval logic
     return 'https://imgur.com'
 }
