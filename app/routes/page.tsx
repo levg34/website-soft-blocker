@@ -27,13 +27,11 @@ export default function SitePage({ loaderData }: Route.ComponentProps) {
     const fetcher = useFetcher()
 
     const visitSite = async () => {
-        // await addSiteVisit(loaderData.user, loaderData.site) <== can't do that from client side
         await fetcher.submit({ action: 'visit' }, { method: 'post' })
         window.open(loaderData.url)
     }
 
     const stayFocused = async () => {
-        // await addStayeFocus(loaderData.user, loaderData.site) <== can't do that from client side
         await fetcher.submit({ action: 'stay' }, { method: 'post' })
         alert('Stay focused! Closing the tab.')
         window.close()
