@@ -20,7 +20,7 @@ export async function action({ params, request }: Route.ActionArgs) {
     } else if (actionType === 'stay') {
         await addStayeFocus(user!, site!)
     }
-    return null
+    return actionType
 }
 
 export default function SitePage({ loaderData }: Route.ComponentProps) {
