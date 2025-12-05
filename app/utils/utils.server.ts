@@ -7,11 +7,23 @@ export async function addSiteVisit(username: string, siteId: string) {
     console.log(`User ${username} visited the page ${siteId}.`)
 }
 
-export async function addStayeFocus(username: string, siteId: string) {}
+export async function addStayeFocus(username: string, siteId: string) {
+    // TODO: database logic to record the stay focused action
+    console.log(`User ${username} stayed focused and did not visit the page ${siteId}.`)
+}
 
 export async function getUrl(username: string, siteId: string): Promise<string> {
     // TODO: implement URL retrieval logic
     return 'https://imgur.com'
 }
 
-export async function addPageLoad(username?: string, siteId?: string): Promise<void> {}
+export async function addPageLoad(username?: string, siteId?: string): Promise<void> {
+    // TODO: implement page load logging logic
+    if (username && siteId) {
+        console.log(`Page loaded for user ${username} and site ${siteId}.`)
+    } else if (username) {
+        console.log(`Page loaded for user ${username}.`)
+    } else {
+        console.log('Home page loaded (guest).')
+    }
+}
