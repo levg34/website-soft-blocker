@@ -79,10 +79,10 @@ export async function findOrCreateUser(username: string): Promise<UserDocument> 
 /**
  * Get a user by username.
  */
-export async function getUserByUsername(username: string): Promise<UserDocument | null> {
-    const collection = await getUsersCollection()
-    return collection.findOne({ username })
-}
+// export async function getUserByUsername(username: string): Promise<UserDocument | null> {
+//     const collection = await getUsersCollection()
+//     return collection.findOne({ username })
+// }
 
 /**
  * Add a tracked site to a user's list.
@@ -101,7 +101,7 @@ export async function addTrackedSiteToUser(username: string, trackedSite: Tracke
  * Get all tracked sites for a user.
  */
 export async function getUserTrackedSites(username: string): Promise<TrackedSite[]> {
-    const user = await getUserByUsername(username)
+    const user = await findOrCreateUser(username)
     return user?.trackedSites || []
 }
 
@@ -109,7 +109,7 @@ export async function getUserTrackedSites(username: string): Promise<TrackedSite
  * Get a specific tracked site for a user.
  */
 export async function getUserTrackedSite(username: string, siteId: string): Promise<TrackedSite | undefined> {
-    const user = await getUserByUsername(username)
+    const user = await findOrCreateUser(username)
     return user?.trackedSites.find((site) => site.siteId === siteId)
 }
 
