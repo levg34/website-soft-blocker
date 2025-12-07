@@ -31,9 +31,4 @@ export interface EventDocument {
     // "resist" = user closes / stays focused
     // "fail" = user proceeds to real site
     action: EventAction
-
-    // Optional metadata
-    sessionId?: string
-    userAgent?: string
-    ipHash?: string
 }
