@@ -1,6 +1,7 @@
 import { addPageLoad, addSiteVisit, addStayeFocus, getUserUrl } from '~/utils/utils.server'
 import type { Route } from './+types/page'
 import { useFetcher } from 'react-router'
+import { capitalizeFirstLetter } from '~/utils/utils'
 
 export async function loader({ params }: Route.LoaderArgs) {
     const user = params.user
@@ -37,12 +38,14 @@ export default function SitePage({ loaderData }: Route.ComponentProps) {
         window.close()
     }
 
+    const siteName = capitalizeFirstLetter(loaderData.site)
+
     return (
         <div>
             <h1>
-                Site {loaderData.site} - {loaderData.user}
+                Site {siteName} - <a href={'/' + loaderData.user}>{loaderData.user}</a>
             </h1>
-            <button onClick={visitSite}>Visit {loaderData.site}</button>
+            <button onClick={visitSite}>Visit {siteName}</button>
             <button onClick={stayFocused}>Stay focused</button>
         </div>
     )
