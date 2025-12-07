@@ -53,6 +53,9 @@ export default function UserPage({ loaderData }: Route.ComponentProps) {
                 <input type="text" name="url" placeholder="site url" />
                 <button type="submit">Add site</button>
             </Form>
+            <p>
+                <a href="/">Home</a>
+            </p>
         </div>
     )
 }
