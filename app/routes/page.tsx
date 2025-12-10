@@ -41,12 +41,30 @@ export default function SitePage({ loaderData }: Route.ComponentProps) {
     const siteName = capitalizeFirstLetter(loaderData.site)
 
     return (
-        <div>
-            <h1>
-                Site {siteName} - <a href={'/' + loaderData.user}>{loaderData.user}</a>
-            </h1>
-            <button onClick={visitSite}>Visit {siteName}</button>
-            <button onClick={stayFocused}>Stay focused</button>
+        <div className="min-h-screen bg-gradient-to-b from-blue-50 to-indigo-50">
+            <div className="max-w-2xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+                <h1 className="text-4xl font-bold text-gray-900 mb-8">
+                    Site {siteName} -{' '}
+                    <a href={'/' + loaderData.user} className="text-indigo-600 hover:text-indigo-700">
+                        {loaderData.user}
+                    </a>
+                </h1>
+
+                <div className="bg-white rounded-lg shadow-md p-8 flex gap-4">
+                    <button
+                        onClick={visitSite}
+                        className="flex-1 bg-indigo-600 hover:bg-indigo-700 text-white font-medium py-3 px-6 rounded-lg transition cursor-pointer"
+                    >
+                        Visit {siteName}
+                    </button>
+                    <button
+                        onClick={stayFocused}
+                        className="flex-1 bg-red-600 hover:bg-red-700 text-white font-medium py-3 px-6 rounded-lg transition cursor-pointer"
+                    >
+                        Stay focused
+                    </button>
+                </div>
+            </div>
         </div>
     )
 }
