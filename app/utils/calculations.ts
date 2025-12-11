@@ -118,27 +118,21 @@ export function calculateStreakPeriods(
 
 /**
  * Get longest streak from list of streaks
- * Only counts streaks >= 2 days
  * @param streaks - Array of streak periods
  * @returns Longest streak length in days
  */
 export function getLongestStreak(streaks: Array<{ days: number }>): number {
     if (streaks.length === 0) return 0
-    const validStreaks = streaks.filter((s) => s.days >= 2)
-    if (validStreaks.length === 0) return 0
-    return Math.max(...validStreaks.map((s) => s.days))
+    return Math.max(...streaks.map((s) => s.days))
 }
 
 /**
  * Get average streak length
- * Only counts streaks >= 2 days
  * @param streaks - Array of streak periods
  * @returns Average streak length
  */
 export function getAverageStreak(streaks: Array<{ days: number }>): number {
     if (streaks.length === 0) return 0
-    const validStreaks = streaks.filter((s) => s.days >= 2)
-    if (validStreaks.length === 0) return 0
-    const total = validStreaks.reduce((sum, s) => sum + s.days, 0)
-    return parseFloat((total / validStreaks.length).toFixed(2))
+    const total = streaks.reduce((sum, s) => sum + s.days, 0)
+    return parseFloat((total / streaks.length).toFixed(2))
 }
