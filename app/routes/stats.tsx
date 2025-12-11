@@ -3,6 +3,7 @@ import type { Route } from './+types/stats'
 import { getUserDetailedStats } from '~/utils/db-utils.server'
 import { Link } from 'react-router'
 import { capitalizeFirstLetter } from '~/utils/utils'
+import { ComposedChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts'
 
 export async function loader({ params }: Route.LoaderArgs) {
     const user = params.user
@@ -75,68 +76,29 @@ export default function StatsPage({ loaderData }: Route.ComponentProps) {
                 {/* Daily Activity Chart */}
                 <div className="bg-white rounded-lg shadow-md p-8 mb-8">
                     <h2 className="text-2xl font-semibold text-gray-800 mb-6">Last 30 Days Activity</h2>
-                    <div className="space-y-4 max-h-96 overflow-y-auto">
-                        {detailedStats.dailyActivity.length === 0 ? (
-                            <p className="text-gray-600">No activity in the last 30 days</p>
-                        ) : (
-                            detailedStats.dailyActivity.map((day) => {
-                                const maxCount = Math.max(
-                                    ...detailedStats.dailyActivity.map((d) => d.views + d.resists + d.fails),
-                                    1
-                                )
-                                const totalDay = day.views + day.resists + day.fails
-                                const viewPercentage = (day.views / maxCount) * 100
-                                const resistPercentage = (day.resists / maxCount) * 100
-                                const failPercentage = (day.fails / maxCount) * 100
-
-                                return (
-                                    <div key={day.date}>
-                                        <div className="flex justify-between text-sm mb-1">
-                                            <span className="font-medium text-gray-700">{day.date}</span>
-                                            <span className="text-gray-600">Total: {totalDay}</span>
-                                        </div>
-                                        <div className="flex h-8 gap-1 rounded overflow-hidden bg-gray-100">
-                                            {viewPercentage > 0 && (
-                                                <div
-                                                    style={{ width: `${viewPercentage}%` }}
-                                                    className="bg-blue-500 hover:bg-blue-600 transition"
-                                                    title={`Views: ${day.views}`}
-                                                />
-                                            )}
-                                            {resistPercentage > 0 && (
-                                                <div
-                                                    style={{ width: `${resistPercentage}%` }}
-                                                    className="bg-green-500 hover:bg-green-600 transition"
-                                                    title={`Resists: ${day.resists}`}
-                                                />
-                                            )}
-                                            {failPercentage > 0 && (
-                                                <div
-                                                    style={{ width: `${failPercentage}%` }}
-                                                    className="bg-red-500 hover:bg-red-600 transition"
-                                                    title={`Fails: ${day.fails}`}
-                                                />
-                                            )}
-                                        </div>
-                                    </div>
-                                )
-                            })
-                        )}
-                    </div>
-                    <div className="flex gap-4 mt-6 text-sm">
-                        <div className="flex items-center gap-2">
-                            <div className="w-4 h-4 bg-blue-500 rounded" />
-                            <span>Views</span>
-                        </div>
-                        <div className="flex items-center gap-2">
-                            <div className="w-4 h-4 bg-green-500 rounded" />
-                            <span>Resists</span>
-                        </div>
-                        <div className="flex items-center gap-2">
-                            <div className="w-4 h-4 bg-red-500 rounded" />
-                            <span>Fails</span>
-                        </div>
-                    </div>
+                    {detailedStats.dailyActivity.length === 0 ? (
+                        <p className="text-gray-600">No activity in the last 30 days</p>
+                    ) : (
+                        <ResponsiveContainer width="100%" height={400}>
+                            <ComposedChart data={detailedStats.dailyActivity}>
+                                <CartesianGrid strokeDasharray="3 3" stroke="#e5e7eb" />
+                                <XAxis dataKey="date" stroke="#6b7280" />
+                                <YAxis stroke="#6b7280" />
+                                <Tooltip
+                                    contentStyle={{
+                                        backgroundColor: '#ffffff',
+                                        border: '1px solid #e5e7eb',
+                                        borderRadius: '0.5rem'
+                                    }}
+                                    labelStyle={{ color: '#1f2937' }}
+                                />
+                                <Legend />
+                                <Bar dataKey="views" fill="#3b82f6" name="Views" />
+                                <Bar dataKey="resists" fill="#10b981" name="Resists" />
+                                <Bar dataKey="fails" fill="#ef4444" name="Fails" />
+                            </ComposedChart>
+                        </ResponsiveContainer>
+                    )}
                 </div>
 
                 {/* Per Site Statistics */}
