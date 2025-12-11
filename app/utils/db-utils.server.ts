@@ -238,24 +238,14 @@ export async function getUserStats(username: string): Promise<{
     const stats = await getUserEventStats(username)
     const collection = await getEventsCollection()
 
-    // Get the last failure event
+    // Get the last failure event timestamp (for display)
     const lastFailure = await collection.findOne({ username, action: 'fail' }, { sort: { timestamp: -1 } })
+    let lastFailureDate: Date | null = lastFailure ? lastFailure.timestamp : null
 
-    let streakDays = 0
-    let lastFailureDate = null
-
-    if (lastFailure) {
-        lastFailureDate = lastFailure.timestamp
-        const now = new Date()
-        const diffTime = Math.abs(now.getTime() - lastFailure.timestamp.getTime())
-        streakDays = Math.floor(diffTime / (1000 * 60 * 60 * 24))
-    } else {
-        // If no failure, calculate days since account creation
-        const user = await findOrCreateUser(username)
-        const now = new Date()
-        const diffTime = Math.abs(now.getTime() - user.createdAt.getTime())
-        streakDays = Math.floor(diffTime / (1000 * 60 * 60 * 24))
-    }
+    // Compute streakDays using the streak-calculation logic so it's consistent
+    // with getUserStreakStats/currentStreak shown in detailed stats.
+    const streakStats = await getUserStreakStats(username)
+    let streakDays = streakStats.currentStreak || 0
 
     return {
         ...stats,
