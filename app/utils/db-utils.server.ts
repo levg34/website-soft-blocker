@@ -1,6 +1,7 @@
 import { MongoClient, ObjectId } from 'mongodb'
 import type { Db, Collection } from 'mongodb'
 import type { UserDocument, EventDocument, TrackedSite, EventAction } from './types'
+import { calculateStreakPeriods, getLongestStreak, getAverageStreak } from './calculations'
 
 let mongoClient: MongoClient | null = null
 let db: Db | null = null
@@ -286,41 +287,12 @@ export async function getUserStreakStats(username: string): Promise<{
         }
     }
 
-    // Calculate streaks (only count streaks > 24 hours, i.e., >= 2 days)
-    const streaks: Array<{ days: number }> = []
-    let streakStart = events[0].timestamp
-    let lastEventDate = events[0].timestamp
-
-    for (let i = 1; i < events.length; i++) {
-        const event = events[i]
-
-        // Check if this is a failure
-        if (event.action === 'fail') {
-            // End current streak
-            const diffTime = Math.abs(lastEventDate.getTime() - streakStart.getTime())
-            const days = Math.floor(diffTime / (1000 * 60 * 60 * 24)) + 1
-            // Only add streak if it's > 24 hours (>= 2 days)
-            if (days >= 2) {
-                streaks.push({ days })
-            }
-            // Start new streak after failure
-            streakStart = event.timestamp
-        }
-
-        lastEventDate = event.timestamp
-    }
-
-    // Add the final streak (current) - only if > 24 hours
-    const diffTime = Math.abs(lastEventDate.getTime() - streakStart.getTime())
-    const days = Math.floor(diffTime / (1000 * 60 * 60 * 24)) + 1
-    if (days >= 2) {
-        streaks.push({ days })
-    }
+    // Calculate streaks using the new function (calendar days without failures)
+    const streaks = calculateStreakPeriods(events)
 
     // Calculate stats from streaks
-    const longestStreak = streaks.length > 0 ? Math.max(...streaks.map((s) => s.days)) : 0
-    const averageStreak =
-        streaks.length > 0 ? parseFloat((streaks.reduce((sum, s) => sum + s.days, 0) / streaks.length).toFixed(2)) : 0
+    const longestStreak = getLongestStreak(streaks)
+    const averageStreak = getAverageStreak(streaks)
     const currentStreak = streaks.length > 0 ? streaks[streaks.length - 1].days : 0
 
     return {
@@ -532,41 +504,12 @@ export async function getSiteStreakStats(
         }
     }
 
-    // Calculate streaks (only count streaks > 24 hours, i.e., >= 2 days)
-    const streaks: Array<{ days: number }> = []
-    let streakStart = events[0].timestamp
-    let lastEventDate = events[0].timestamp
-
-    for (let i = 1; i < events.length; i++) {
-        const event = events[i]
-
-        // Check if this is a failure
-        if (event.action === 'fail') {
-            // End current streak
-            const diffTime = Math.abs(lastEventDate.getTime() - streakStart.getTime())
-            const days = Math.floor(diffTime / (1000 * 60 * 60 * 24)) + 1
-            // Only add streak if it's > 24 hours (>= 2 days)
-            if (days >= 2) {
-                streaks.push({ days })
-            }
-            // Start new streak after failure
-            streakStart = event.timestamp
-        }
-
-        lastEventDate = event.timestamp
-    }
-
-    // Add the final streak (current) - only if > 24 hours
-    const diffTime = Math.abs(lastEventDate.getTime() - streakStart.getTime())
-    const days = Math.floor(diffTime / (1000 * 60 * 60 * 24)) + 1
-    if (days >= 2) {
-        streaks.push({ days })
-    }
+    // Calculate streaks using the new function (calendar days without failures)
+    const streaks = calculateStreakPeriods(events)
 
     // Calculate stats from streaks
-    const longestStreak = streaks.length > 0 ? Math.max(...streaks.map((s) => s.days)) : 0
-    const averageStreak =
-        streaks.length > 0 ? parseFloat((streaks.reduce((sum, s) => sum + s.days, 0) / streaks.length).toFixed(2)) : 0
+    const longestStreak = getLongestStreak(streaks)
+    const averageStreak = getAverageStreak(streaks)
     const currentStreak = streaks.length > 0 ? streaks[streaks.length - 1].days : 0
 
     return {
