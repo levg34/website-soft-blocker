@@ -45,8 +45,11 @@ export default function SitePage({ loaderData }: Route.ComponentProps) {
     return (
         <div className="min-h-screen bg-gradient-to-b from-blue-50 to-indigo-50">
             <div className="max-w-2xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-                <div className="flex justify-between items-center mb-8">
-                    <h1 className="text-4xl font-bold text-gray-900">Site {siteName}</h1>
+                <div className="flex justify-between items-start mb-8">
+                    <div>
+                        <h1 className="text-4xl font-bold text-gray-900">{siteName}</h1>
+                        <p className="text-lg text-gray-600 mt-2">{loaderData.user}'s focus page</p>
+                    </div>
                     <Link to={`/${loaderData.user}`} className="text-indigo-600 hover:text-indigo-700 font-medium">
                         Back to user page
                     </Link>
