@@ -8,6 +8,7 @@ export type Badge = {
     threshold?: number
     emoji?: string
     earned?: boolean
+    newly?: boolean
 }
 
 /**
@@ -21,14 +22,21 @@ export async function getUserStreakBadges(username: string): Promise<Badge[]> {
     const allBadges: any[] = badgesJson as any[]
     const streakBadges = allBadges.filter((b) => b.criteria && b.criteria.type === 'streak_days')
 
-    const mapped: Badge[] = streakBadges.map((b) => ({
-        id: b.id,
-        title: b.title,
-        description: b.description,
-        threshold: b.criteria?.threshold,
-        emoji: b.emoji,
-        earned: typeof b.criteria?.threshold === 'number' ? streakDays >= b.criteria.threshold : false
-    }))
+    const mapped: Badge[] = streakBadges.map((b) => {
+        const threshold = b.criteria?.threshold
+        const earned = typeof threshold === 'number' ? streakDays >= threshold : false
+        const newly = typeof threshold === 'number' ? streakDays === threshold : false
+
+        return {
+            id: b.id,
+            title: b.title,
+            description: b.description,
+            threshold,
+            emoji: b.emoji,
+            earned,
+            newly
+        }
+    })
 
     // Return only earned badges (server-side filter)
     return mapped.filter((m) => m.earned)
