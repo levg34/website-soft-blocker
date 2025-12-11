@@ -55,18 +55,30 @@ export default function SiteStatsPage({ loaderData }: Route.ComponentProps) {
                 </div>
 
                 {/* Additional Metrics */}
-                <div className="grid grid-cols-3 gap-4 mb-8">
+                <div className="grid grid-cols-2 md:grid-cols-6 gap-4 mb-8">
                     <div className="bg-white rounded-lg shadow-md p-6">
                         <div className="text-2xl font-bold text-purple-600">{detailedStats.visitsPerDay}</div>
-                        <div className="text-sm text-gray-600 mt-2">Visits per Day</div>
+                        <div className="text-sm text-gray-600 mt-2">Visits/Day</div>
                     </div>
                     <div className="bg-white rounded-lg shadow-md p-6">
-                        <div className="text-2xl font-bold text-emerald-600">{successRate}%</div>
-                        <div className="text-sm text-gray-600 mt-2">Success Rate</div>
+                        <div className="text-2xl font-bold text-green-600">{detailedStats.resistsPerDay}</div>
+                        <div className="text-sm text-gray-600 mt-2">Resists/Day</div>
                     </div>
                     <div className="bg-white rounded-lg shadow-md p-6">
-                        <div className="text-2xl font-bold text-red-500">{detailedStats.failsPerDay}</div>
-                        <div className="text-sm text-gray-600 mt-2">Fails per Day</div>
+                        <div className="text-2xl font-bold text-red-600">{detailedStats.failsPerDay}</div>
+                        <div className="text-sm text-gray-600 mt-2">Fails/Day</div>
+                    </div>
+                    <div className="bg-white rounded-lg shadow-md p-6">
+                        <div className="text-2xl font-bold text-purple-500">{detailedStats.avgViewsLast15Days}</div>
+                        <div className="text-sm text-gray-600 mt-2">Avg Visits/Day (15d)</div>
+                    </div>
+                    <div className="bg-white rounded-lg shadow-md p-6">
+                        <div className="text-2xl font-bold text-green-500">{detailedStats.avgResistsLast15Days}</div>
+                        <div className="text-sm text-gray-600 mt-2">Avg Resists/Day (15d)</div>
+                    </div>
+                    <div className="bg-white rounded-lg shadow-md p-6">
+                        <div className="text-2xl font-bold text-red-500">{detailedStats.avgFailsLast15Days}</div>
+                        <div className="text-sm text-gray-600 mt-2">Avg Fails/Day (15d)</div>
                     </div>
                 </div>
 

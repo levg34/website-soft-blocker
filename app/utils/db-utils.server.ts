@@ -271,6 +271,12 @@ export async function getUserDetailedStats(username: string): Promise<{
     totalFails: number
     streakDays: number
     lastFailureDate: Date | null
+    visitsPerDay: number
+    resistsPerDay: number
+    failsPerDay: number
+    avgViewsLast15Days: number
+    avgResistsLast15Days: number
+    avgFailsLast15Days: number
     siteStats: Array<{
         siteId: string
         views: number
@@ -353,12 +359,25 @@ export async function getUserDetailedStats(username: string): Promise<{
 
     const dailyActivity = Object.values(dailyActivityMap)
 
+    // Calculate metrics for different periods
+    const allTimeMetrics = calculatePeriodMetrics(dailyActivity)
+    const fifteenDaysAgo = new Date()
+    fifteenDaysAgo.setDate(fifteenDaysAgo.getDate() - 15)
+    const last15DaysActivity = dailyActivity.filter((day) => new Date(day.date) >= fifteenDaysAgo)
+    const last15DaysMetrics = calculatePeriodMetrics(last15DaysActivity)
+
     return {
         totalViews: stats.views,
         totalResists: stats.resists,
         totalFails: stats.fails,
         streakDays: stats.streakDays,
         lastFailureDate: stats.lastFailureDate,
+        visitsPerDay: allTimeMetrics.avgViews,
+        resistsPerDay: allTimeMetrics.avgResists,
+        failsPerDay: allTimeMetrics.avgFails,
+        avgViewsLast15Days: last15DaysMetrics.avgViews,
+        avgResistsLast15Days: last15DaysMetrics.avgResists,
+        avgFailsLast15Days: last15DaysMetrics.avgFails,
         siteStats,
         dailyActivity
     }
@@ -465,6 +484,35 @@ export async function getEnhancedSiteStats(
 }
 
 /**
+ * Calculate detailed activity metrics for a period
+ */
+function calculatePeriodMetrics(dailyActivity: Array<{ views: number; resists: number; fails: number }>): {
+    totalViews: number
+    totalResists: number
+    totalFails: number
+    avgViews: number
+    avgResists: number
+    avgFails: number
+} {
+    if (dailyActivity.length === 0) {
+        return { totalViews: 0, totalResists: 0, totalFails: 0, avgViews: 0, avgResists: 0, avgFails: 0 }
+    }
+
+    const totalViews = dailyActivity.reduce((sum, day) => sum + day.views, 0)
+    const totalResists = dailyActivity.reduce((sum, day) => sum + day.resists, 0)
+    const totalFails = dailyActivity.reduce((sum, day) => sum + day.fails, 0)
+
+    return {
+        totalViews,
+        totalResists,
+        totalFails,
+        avgViews: parseFloat((totalViews / dailyActivity.length).toFixed(2)),
+        avgResists: parseFloat((totalResists / dailyActivity.length).toFixed(2)),
+        avgFails: parseFloat((totalFails / dailyActivity.length).toFixed(2))
+    }
+}
+
+/**
  * Get detailed statistics for a specific site including daily activity.
  */
 export async function getSiteDetailedStats(
@@ -477,7 +525,11 @@ export async function getSiteDetailedStats(
     streakDays: number
     lastFailureDate: Date | null
     visitsPerDay: number
+    resistsPerDay: number
     failsPerDay: number
+    avgViewsLast15Days: number
+    avgResistsLast15Days: number
+    avgFailsLast15Days: number
     daysTracked: number
     dailyActivity: Array<{
         date: string
@@ -531,14 +583,25 @@ export async function getSiteDetailedStats(
 
     const dailyActivity = Object.values(dailyActivityMap)
 
+    // Calculate metrics for different periods
+    const allTimeMetrics = calculatePeriodMetrics(dailyActivity)
+    const fifteenDaysAgo = new Date()
+    fifteenDaysAgo.setDate(fifteenDaysAgo.getDate() - 15)
+    const last15DaysActivity = dailyActivity.filter((day) => new Date(day.date) >= fifteenDaysAgo)
+    const last15DaysMetrics = calculatePeriodMetrics(last15DaysActivity)
+
     return {
         views: enhancedStats.views,
         resists: enhancedStats.resists,
         fails: enhancedStats.fails,
         streakDays: enhancedStats.streakDays,
         lastFailureDate: enhancedStats.lastFailureDate,
-        visitsPerDay: enhancedStats.visitsPerDay,
-        failsPerDay: enhancedStats.failsPerDay,
+        visitsPerDay: allTimeMetrics.avgViews,
+        resistsPerDay: allTimeMetrics.avgResists,
+        failsPerDay: allTimeMetrics.avgFails,
+        avgViewsLast15Days: last15DaysMetrics.avgViews,
+        avgResistsLast15Days: last15DaysMetrics.avgResists,
+        avgFailsLast15Days: last15DaysMetrics.avgFails,
         daysTracked: enhancedStats.daysTracked,
         dailyActivity
     }
