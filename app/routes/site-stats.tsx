@@ -3,7 +3,7 @@ import type { Route } from './+types/site-stats'
 import { getSiteDetailedStats } from '~/utils/db-utils.server'
 import { Link } from 'react-router'
 import { capitalizeFirstLetter } from '~/utils/utils'
-import { OverallStats, AdditionalMetrics, ActivityChart, LastFailureInfo, PageHeader } from '~/components'
+import { OverallStats, AdditionalMetrics, ActivityChart, LastFailureInfo, PageHeader, StreakStats } from '~/components'
 
 export async function loader({ params }: Route.LoaderArgs) {
     const user = params.user
@@ -33,6 +33,15 @@ export default function SiteStatsPage({ loaderData }: Route.ComponentProps) {
                         totalViews: detailedStats.views,
                         totalResists: detailedStats.resists,
                         totalFails: detailedStats.fails
+                    }}
+                />
+
+                <StreakStats
+                    stats={{
+                        currentStreak: detailedStats.currentStreak,
+                        longestStreak: detailedStats.longestStreak,
+                        averageStreak: detailedStats.averageStreak,
+                        totalStreaks: detailedStats.totalStreaks
                     }}
                 />
 
