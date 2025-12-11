@@ -277,6 +277,9 @@ export async function getUserDetailedStats(username: string): Promise<{
         resists: number
         fails: number
         streakDays: number
+        visitsPerDay: number
+        failsPerDay: number
+        daysTracked: number
     }>
     dailyActivity: Array<{
         date: string
@@ -292,14 +295,16 @@ export async function getUserDetailedStats(username: string): Promise<{
     // Get stats per site
     const siteStats = []
     for (const site of trackedSites) {
-        const siteEventStats = await getSiteEventStats(username, site.siteId)
-        const siteSiteStats = await getSiteStats(username, site.siteId)
+        const enhancedStats = await getEnhancedSiteStats(username, site.siteId)
         siteStats.push({
             siteId: site.siteId,
-            views: siteEventStats.views,
-            resists: siteEventStats.resists,
-            fails: siteEventStats.fails,
-            streakDays: siteSiteStats.streakDays
+            views: enhancedStats.views,
+            resists: enhancedStats.resists,
+            fails: enhancedStats.fails,
+            streakDays: enhancedStats.streakDays,
+            visitsPerDay: enhancedStats.visitsPerDay,
+            failsPerDay: enhancedStats.failsPerDay,
+            daysTracked: enhancedStats.daysTracked
         })
     }
 
@@ -401,5 +406,60 @@ export async function getSiteStats(
         ...stats,
         streakDays,
         lastFailureDate
+    }
+}
+
+/**
+ * Get enhanced site statistics with date range info and visits per day.
+ */
+export async function getEnhancedSiteStats(
+    username: string,
+    siteId: string
+): Promise<{
+    views: number
+    resists: number
+    fails: number
+    streakDays: number
+    lastFailureDate: Date | null
+    firstVisitDate: Date | null
+    lastVisitDate: Date | null
+    visitsPerDay: number
+    failsPerDay: number
+    daysTracked: number
+}> {
+    const stats = await getSiteStats(username, siteId)
+    const collection = await getEventsCollection()
+
+    // Get first and last event dates
+    const firstEvent = await collection.findOne({ username, siteId }, { sort: { timestamp: 1 } })
+    const lastEvent = await collection.findOne({ username, siteId }, { sort: { timestamp: -1 } })
+
+    let firstVisitDate = null
+    let lastVisitDate = null
+    let daysTracked = 0
+    let visitsPerDay = 0
+    let failsPerDay = 0
+
+    if (firstEvent && lastEvent) {
+        firstVisitDate = firstEvent.timestamp
+        lastVisitDate = lastEvent.timestamp
+
+        const diffTime = Math.abs(lastEvent.timestamp.getTime() - firstEvent.timestamp.getTime())
+        daysTracked = Math.floor(diffTime / (1000 * 60 * 60 * 24)) + 1 // +1 to include the first day
+        visitsPerDay = daysTracked > 0 ? parseFloat((stats.views / daysTracked).toFixed(2)) : 0
+        failsPerDay = daysTracked > 0 ? parseFloat((stats.fails / daysTracked).toFixed(2)) : 0
+    }
+
+    return {
+        views: stats.views,
+        resists: stats.resists,
+        fails: stats.fails,
+        streakDays: stats.streakDays,
+        lastFailureDate: stats.lastFailureDate,
+        firstVisitDate,
+        lastVisitDate,
+        visitsPerDay,
+        failsPerDay,
+        daysTracked
     }
 }

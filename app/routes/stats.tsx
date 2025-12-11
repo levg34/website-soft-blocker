@@ -110,8 +110,11 @@ export default function StatsPage({ loaderData }: Route.ComponentProps) {
                                 <tr className="border-b border-gray-200">
                                     <th className="text-left py-3 px-4 font-semibold text-gray-700">Site</th>
                                     <th className="text-center py-3 px-4 font-semibold text-gray-700">Visits</th>
+                                    <th className="text-center py-3 px-4 font-semibold text-gray-700">Visits/Day</th>
+                                    <th className="text-center py-3 px-4 font-semibold text-gray-700">Days Tracked</th>
                                     <th className="text-center py-3 px-4 font-semibold text-gray-700">Resisted</th>
                                     <th className="text-center py-3 px-4 font-semibold text-gray-700">Failed</th>
+                                    <th className="text-center py-3 px-4 font-semibold text-gray-700">Fails/Day</th>
                                     <th className="text-center py-3 px-4 font-semibold text-gray-700">Streak</th>
                                     <th className="text-center py-3 px-4 font-semibold text-gray-700">Success Rate</th>
                                 </tr>
@@ -134,11 +137,20 @@ export default function StatsPage({ loaderData }: Route.ComponentProps) {
                                             <td className="text-center py-3 px-4 text-blue-600 font-medium">
                                                 {site.views}
                                             </td>
+                                            <td className="text-center py-3 px-4 text-purple-600 font-medium">
+                                                {site.visitsPerDay}
+                                            </td>
+                                            <td className="text-center py-3 px-4 text-gray-700">
+                                                {site.daysTracked} days
+                                            </td>
                                             <td className="text-center py-3 px-4 text-green-600 font-medium">
                                                 {site.resists}
                                             </td>
                                             <td className="text-center py-3 px-4 text-red-600 font-medium">
                                                 {site.fails}
+                                            </td>
+                                            <td className="text-center py-3 px-4 text-red-500 font-medium">
+                                                {site.failsPerDay}
                                             </td>
                                             <td className="text-center py-3 px-4 font-medium text-indigo-600">
                                                 {site.streakDays} days
