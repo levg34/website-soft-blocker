@@ -1,4 +1,5 @@
-import { MongoClient, Db, Collection, ObjectId } from 'mongodb'
+import { MongoClient, ObjectId } from 'mongodb'
+import type { Db, Collection } from 'mongodb'
 import type { UserDocument, EventDocument, TrackedSite, EventAction } from './types'
 
 let mongoClient: MongoClient | null = null

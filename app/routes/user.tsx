@@ -3,6 +3,7 @@ import type { Route } from './+types/user'
 import { capitalizeFirstLetter } from '~/utils/utils'
 import { Form, Link } from 'react-router'
 import { getUserStats } from '~/utils/db-utils.server'
+import { OverallStats, PageHeader } from '~/components'
 
 export async function loader({ params }: Route.LoaderArgs) {
     const user = params.user
@@ -42,35 +43,17 @@ export default function UserPage({ loaderData }: Route.ComponentProps) {
     return (
         <div className="min-h-screen bg-gradient-to-b from-blue-50 to-indigo-50">
             <div className="max-w-2xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-                <div className="flex justify-between items-start mb-8">
-                    <div>
-                        <h1 className="text-4xl font-bold text-gray-900">{loaderData.user}</h1>
-                        <p className="text-lg text-gray-600 mt-2">Your dashboard</p>
-                    </div>
-                    <Link to="/" className="text-indigo-600 hover:text-indigo-700 font-medium">
-                        Back to home
-                    </Link>
-                </div>
+                <PageHeader title={loaderData.user} subtitle="Your dashboard" backLink="/" backLabel="Back to home" />
 
                 {/* Statistics Section */}
-                <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
-                    <div className="bg-white rounded-lg shadow-md p-6 text-center">
-                        <div className="text-3xl font-bold text-indigo-600">{loaderData.stats.streakDays}</div>
-                        <div className="text-sm text-gray-600 mt-2">Days Streak</div>
-                    </div>
-                    <div className="bg-white rounded-lg shadow-md p-6 text-center">
-                        <div className="text-3xl font-bold text-blue-600">{loaderData.stats.views}</div>
-                        <div className="text-sm text-gray-600 mt-2">Page Visits</div>
-                    </div>
-                    <div className="bg-white rounded-lg shadow-md p-6 text-center">
-                        <div className="text-3xl font-bold text-green-600">{loaderData.stats.resists}</div>
-                        <div className="text-sm text-gray-600 mt-2">Times Focused</div>
-                    </div>
-                    <div className="bg-white rounded-lg shadow-md p-6 text-center">
-                        <div className="text-3xl font-bold text-red-600">{loaderData.stats.fails}</div>
-                        <div className="text-sm text-gray-600 mt-2">Times Failed</div>
-                    </div>
-                </div>
+                <OverallStats
+                    stats={{
+                        streakDays: loaderData.stats.streakDays,
+                        totalViews: loaderData.stats.views,
+                        totalResists: loaderData.stats.resists,
+                        totalFails: loaderData.stats.fails
+                    }}
+                />
 
                 <div className="mb-8">
                     <Link
