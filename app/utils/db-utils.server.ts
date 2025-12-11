@@ -463,3 +463,83 @@ export async function getEnhancedSiteStats(
         daysTracked
     }
 }
+
+/**
+ * Get detailed statistics for a specific site including daily activity.
+ */
+export async function getSiteDetailedStats(
+    username: string,
+    siteId: string
+): Promise<{
+    views: number
+    resists: number
+    fails: number
+    streakDays: number
+    lastFailureDate: Date | null
+    visitsPerDay: number
+    failsPerDay: number
+    daysTracked: number
+    dailyActivity: Array<{
+        date: string
+        views: number
+        resists: number
+        fails: number
+    }>
+}> {
+    const collection = await getEventsCollection()
+    const enhancedStats = await getEnhancedSiteStats(username, siteId)
+
+    // Get daily activity for this site (all time)
+    const pipeline = [
+        {
+            $match: {
+                username,
+                siteId
+            }
+        },
+        {
+            $group: {
+                _id: {
+                    date: {
+                        $dateToString: { format: '%Y-%m-%d', date: '$timestamp' }
+                    },
+                    action: '$action'
+                },
+                count: { $sum: 1 }
+            }
+        },
+        {
+            $sort: { '_id.date': 1 }
+        }
+    ]
+
+    const dailyRaw = await collection.aggregate(pipeline).toArray()
+
+    // Transform daily activity data
+    const dailyActivityMap: Record<string, { date: string; views: number; resists: number; fails: number }> = {}
+
+    for (const entry of dailyRaw) {
+        const date = entry._id.date
+        if (!dailyActivityMap[date]) {
+            dailyActivityMap[date] = { date, views: 0, resists: 0, fails: 0 }
+        }
+
+        if (entry._id.action === 'view') dailyActivityMap[date].views = entry.count
+        if (entry._id.action === 'resist') dailyActivityMap[date].resists = entry.count
+        if (entry._id.action === 'fail') dailyActivityMap[date].fails = entry.count
+    }
+
+    const dailyActivity = Object.values(dailyActivityMap)
+
+    return {
+        views: enhancedStats.views,
+        resists: enhancedStats.resists,
+        fails: enhancedStats.fails,
+        streakDays: enhancedStats.streakDays,
+        lastFailureDate: enhancedStats.lastFailureDate,
+        visitsPerDay: enhancedStats.visitsPerDay,
+        failsPerDay: enhancedStats.failsPerDay,
+        daysTracked: enhancedStats.daysTracked,
+        dailyActivity
+    }
+}

@@ -128,7 +128,7 @@ export default function StatsPage({ loaderData }: Route.ComponentProps) {
                                         <tr key={site.siteId} className="border-b border-gray-100 hover:bg-gray-50">
                                             <td className="py-3 px-4">
                                                 <Link
-                                                    to={`/${loaderData.user}/${site.siteId}`}
+                                                    to={`/${loaderData.user}/stats/${site.siteId}`}
                                                     className="text-indigo-600 hover:text-indigo-700 font-medium"
                                                 >
                                                     {capitalizeFirstLetter(site.siteId)}
