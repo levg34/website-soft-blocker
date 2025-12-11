@@ -263,6 +263,103 @@ export async function getUserStats(username: string): Promise<{
 }
 
 /**
+ * Get detailed statistics for a user including daily activity.
+ */
+export async function getUserDetailedStats(username: string): Promise<{
+    totalViews: number
+    totalResists: number
+    totalFails: number
+    streakDays: number
+    lastFailureDate: Date | null
+    siteStats: Array<{
+        siteId: string
+        views: number
+        resists: number
+        fails: number
+        streakDays: number
+    }>
+    dailyActivity: Array<{
+        date: string
+        views: number
+        resists: number
+        fails: number
+    }>
+}> {
+    const collection = await getEventsCollection()
+    const stats = await getUserStats(username)
+    const trackedSites = await getUserTrackedSites(username)
+
+    // Get stats per site
+    const siteStats = []
+    for (const site of trackedSites) {
+        const siteEventStats = await getSiteEventStats(username, site.siteId)
+        const siteSiteStats = await getSiteStats(username, site.siteId)
+        siteStats.push({
+            siteId: site.siteId,
+            views: siteEventStats.views,
+            resists: siteEventStats.resists,
+            fails: siteEventStats.fails,
+            streakDays: siteSiteStats.streakDays
+        })
+    }
+
+    // Get daily activity for the last 30 days
+    const thirtyDaysAgo = new Date()
+    thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 30)
+
+    const pipeline = [
+        {
+            $match: {
+                username,
+                timestamp: { $gte: thirtyDaysAgo }
+            }
+        },
+        {
+            $group: {
+                _id: {
+                    date: {
+                        $dateToString: { format: '%Y-%m-%d', date: '$timestamp' }
+                    },
+                    action: '$action'
+                },
+                count: { $sum: 1 }
+            }
+        },
+        {
+            $sort: { '_id.date': 1 }
+        }
+    ]
+
+    const dailyRaw = await collection.aggregate(pipeline).toArray()
+
+    // Transform daily activity data
+    const dailyActivityMap: Record<string, { date: string; views: number; resists: number; fails: number }> = {}
+
+    for (const entry of dailyRaw) {
+        const date = entry._id.date
+        if (!dailyActivityMap[date]) {
+            dailyActivityMap[date] = { date, views: 0, resists: 0, fails: 0 }
+        }
+
+        if (entry._id.action === 'view') dailyActivityMap[date].views = entry.count
+        if (entry._id.action === 'resist') dailyActivityMap[date].resists = entry.count
+        if (entry._id.action === 'fail') dailyActivityMap[date].fails = entry.count
+    }
+
+    const dailyActivity = Object.values(dailyActivityMap)
+
+    return {
+        totalViews: stats.views,
+        totalResists: stats.resists,
+        totalFails: stats.fails,
+        streakDays: stats.streakDays,
+        lastFailureDate: stats.lastFailureDate,
+        siteStats,
+        dailyActivity
+    }
+}
+
+/**
  * Get site statistics including streak (days since last failure for a specific site).
  */
 export async function getSiteStats(

@@ -64,6 +64,15 @@ export default function UserPage({ loaderData }: Route.ComponentProps) {
                     </div>
                 </div>
 
+                <div className="mb-8">
+                    <Link
+                        to="stats"
+                        className="inline-block bg-indigo-600 hover:bg-indigo-700 text-white font-medium py-2 px-6 rounded-lg transition"
+                    >
+                        View Detailed Statistics
+                    </Link>
+                </div>
+
                 <div className="bg-white rounded-lg shadow-md p-8 mb-8">
                     <h2 className="text-2xl font-semibold text-gray-800 mb-4">Available Sites</h2>
                     <ul className="space-y-2">
