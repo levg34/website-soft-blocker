@@ -77,6 +77,90 @@
         }
     },
     {
+        "id": "streak-1",
+        "title": "Fresh Start",
+        "description": "Maintain a 1-day streak.",
+        "category": "streak",
+        "points": 5,
+        "emoji": "🌟",
+        "criteria": {
+            "type": "streak_days",
+            "threshold": 1
+        }
+    },
+    {
+        "id": "streak-7",
+        "title": "Week Strong",
+        "description": "Maintain a 7-day streak (1 week).",
+        "category": "streak",
+        "points": 25,
+        "emoji": "🏆",
+        "criteria": {
+            "type": "streak_days",
+            "threshold": 7
+        }
+    },
+    {
+        "id": "streak-14",
+        "title": "Two-Week Tenacity",
+        "description": "Maintain a 14-day streak (2 weeks).",
+        "category": "streak",
+        "points": 60,
+        "emoji": "🔥",
+        "criteria": {
+            "type": "streak_days",
+            "threshold": 14
+        }
+    },
+    {
+        "id": "streak-30",
+        "title": "Month Master",
+        "description": "Maintain a 30-day streak (1 month).",
+        "category": "streak",
+        "points": 200,
+        "emoji": "🥇",
+        "criteria": {
+            "type": "streak_days",
+            "threshold": 30
+        }
+    },
+    {
+        "id": "streak-90",
+        "title": "Seasoned",
+        "description": "Maintain a 90-day streak (3 months).",
+        "category": "streak",
+        "points": 500,
+        "emoji": "🏅",
+        "criteria": {
+            "type": "streak_days",
+            "threshold": 90
+        }
+    },
+    {
+        "id": "streak-180",
+        "title": "Half-Year Hero",
+        "description": "Maintain a 180-day streak (6 months).",
+        "category": "streak",
+        "points": 900,
+        "emoji": "🌈",
+        "criteria": {
+            "type": "streak_days",
+            "threshold": 180
+        }
+    },
+    {
+        "id": "streak-365",
+        "title": "Yearlong Victory",
+        "description": "Maintain a 365-day streak (1 year).",
+        "category": "streak",
+        "points": 2000,
+        "emoji": "🏆🎉",
+        "criteria": {
+            "type": "streak_days",
+            "threshold": 365
+        }
+    },
+    {
         "id": "first-day-no-visit",
         "title": "Day One Detox",
         "description": "Avoid visiting the targeted site for a full 24 hours.",

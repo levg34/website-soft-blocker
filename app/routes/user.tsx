@@ -1,16 +1,18 @@
 import { addPageLoad, getUserSites } from '~/utils/utils.server'
+import { getUserStreakBadges } from '~/utils/badges.server'
 import type { Route } from './+types/user'
 import { capitalizeFirstLetter } from '~/utils/utils'
 import { Form, Link } from 'react-router'
 import { getUserStats } from '~/utils/db-utils.server'
-import { OverallStats, PageHeader } from '~/components'
+import { BadgeCard, OverallStats, PageHeader } from '~/components'
 
 export async function loader({ params }: Route.LoaderArgs) {
     const user = params.user
     await addPageLoad(user)
     const sites = await getUserSites(user)
     const stats = await getUserStats(user)
-    return { user, sites, stats }
+    const badges = await getUserStreakBadges(user)
+    return { user, sites, stats, badges }
 }
 
 export async function action({ params, request }: Route.ActionArgs) {
@@ -62,6 +64,23 @@ export default function UserPage({ loaderData }: Route.ComponentProps) {
                     >
                         View Detailed Statistics
                     </Link>
+                </div>
+
+                <div className="bg-white rounded-lg shadow-md p-8 mb-8">
+                    <h2 className="text-2xl font-semibold text-gray-800 mb-4">Badges</h2>
+                    {loaderData.badges && loaderData.badges.length > 0 ? (
+                        <div className="grid grid-cols-2 sm:grid-cols-3 gap-4">
+                            {loaderData.badges.map((badge: any) => (
+                                <BadgeCard key={badge.id} badge={badge} />
+                            ))}
+                        </div>
+                    ) : (
+                        <div className="text-center py-12">
+                            <div className="text-4xl">🎉</div>
+                            <div className="mt-4 text-lg font-medium text-gray-700">No badges earned yet</div>
+                            <div className="mt-2 text-sm text-gray-500">Keep up your streak to unlock badges!</div>
+                        </div>
+                    )}
                 </div>
 
                 <div className="bg-white rounded-lg shadow-md p-8 mb-8">
