@@ -222,3 +222,87 @@ export async function getSiteEventStats(
 
     return stats
 }
+
+/**
+ * Get user statistics including streak (days since last failure).
+ */
+export async function getUserStats(username: string): Promise<{
+    views: number
+    resists: number
+    fails: number
+    streakDays: number
+    lastFailureDate: Date | null
+}> {
+    const stats = await getUserEventStats(username)
+    const collection = await getEventsCollection()
+
+    // Get the last failure event
+    const lastFailure = await collection.findOne({ username, action: 'fail' }, { sort: { timestamp: -1 } })
+
+    let streakDays = 0
+    let lastFailureDate = null
+
+    if (lastFailure) {
+        lastFailureDate = lastFailure.timestamp
+        const now = new Date()
+        const diffTime = Math.abs(now.getTime() - lastFailure.timestamp.getTime())
+        streakDays = Math.floor(diffTime / (1000 * 60 * 60 * 24))
+    } else {
+        // If no failure, calculate days since account creation
+        const user = await findOrCreateUser(username)
+        const now = new Date()
+        const diffTime = Math.abs(now.getTime() - user.createdAt.getTime())
+        streakDays = Math.floor(diffTime / (1000 * 60 * 60 * 24))
+    }
+
+    return {
+        ...stats,
+        streakDays,
+        lastFailureDate
+    }
+}
+
+/**
+ * Get site statistics including streak (days since last failure for a specific site).
+ */
+export async function getSiteStats(
+    username: string,
+    siteId: string
+): Promise<{
+    views: number
+    resists: number
+    fails: number
+    streakDays: number
+    lastFailureDate: Date | null
+}> {
+    const stats = await getSiteEventStats(username, siteId)
+    const collection = await getEventsCollection()
+
+    // Get the last failure event for this specific site
+    const lastFailure = await collection.findOne({ username, siteId, action: 'fail' }, { sort: { timestamp: -1 } })
+
+    let streakDays = 0
+    let lastFailureDate = null
+
+    if (lastFailure) {
+        lastFailureDate = lastFailure.timestamp
+        const now = new Date()
+        const diffTime = Math.abs(now.getTime() - lastFailure.timestamp.getTime())
+        streakDays = Math.floor(diffTime / (1000 * 60 * 60 * 24))
+    } else {
+        // If no failure for this site, calculate days since first view of this site
+        const firstView = await collection.findOne({ username, siteId }, { sort: { timestamp: 1 } })
+
+        if (firstView) {
+            const now = new Date()
+            const diffTime = Math.abs(now.getTime() - firstView.timestamp.getTime())
+            streakDays = Math.floor(diffTime / (1000 * 60 * 60 * 24))
+        }
+    }
+
+    return {
+        ...stats,
+        streakDays,
+        lastFailureDate
+    }
+}

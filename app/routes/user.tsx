@@ -2,12 +2,14 @@ import { addPageLoad, getUserSites } from '~/utils/utils.server'
 import type { Route } from './+types/user'
 import { capitalizeFirstLetter } from '~/utils/utils'
 import { Form, Link } from 'react-router'
+import { getUserStats } from '~/utils/db-utils.server'
 
 export async function loader({ params }: Route.LoaderArgs) {
     const user = params.user
     await addPageLoad(user)
     const sites = await getUserSites(user)
-    return { user, sites }
+    const stats = await getUserStats(user)
+    return { user, sites, stats }
 }
 
 export async function action({ params, request }: Route.ActionArgs) {
@@ -41,6 +43,26 @@ export default function UserPage({ loaderData }: Route.ComponentProps) {
         <div className="min-h-screen bg-gradient-to-b from-blue-50 to-indigo-50">
             <div className="max-w-2xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
                 <h1 className="text-4xl font-bold text-gray-900 mb-8">User Page - {loaderData.user}</h1>
+
+                {/* Statistics Section */}
+                <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
+                    <div className="bg-white rounded-lg shadow-md p-6 text-center">
+                        <div className="text-3xl font-bold text-indigo-600">{loaderData.stats.streakDays}</div>
+                        <div className="text-sm text-gray-600 mt-2">Days Streak</div>
+                    </div>
+                    <div className="bg-white rounded-lg shadow-md p-6 text-center">
+                        <div className="text-3xl font-bold text-blue-600">{loaderData.stats.views}</div>
+                        <div className="text-sm text-gray-600 mt-2">Page Visits</div>
+                    </div>
+                    <div className="bg-white rounded-lg shadow-md p-6 text-center">
+                        <div className="text-3xl font-bold text-green-600">{loaderData.stats.resists}</div>
+                        <div className="text-sm text-gray-600 mt-2">Times Focused</div>
+                    </div>
+                    <div className="bg-white rounded-lg shadow-md p-6 text-center">
+                        <div className="text-3xl font-bold text-red-600">{loaderData.stats.fails}</div>
+                        <div className="text-sm text-gray-600 mt-2">Times Failed</div>
+                    </div>
+                </div>
 
                 <div className="bg-white rounded-lg shadow-md p-8 mb-8">
                     <h2 className="text-2xl font-semibold text-gray-800 mb-4">Available Sites</h2>

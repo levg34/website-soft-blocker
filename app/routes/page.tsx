@@ -2,13 +2,15 @@ import { addPageLoad, addSiteVisit, addStayeFocus, getUserUrl } from '~/utils/ut
 import type { Route } from './+types/page'
 import { useFetcher } from 'react-router'
 import { capitalizeFirstLetter } from '~/utils/utils'
+import { getSiteStats } from '~/utils/db-utils.server'
 
 export async function loader({ params }: Route.LoaderArgs) {
     const user = params.user
     const site = params.site
     await addPageLoad(user, site)
     const url = await getUserUrl(user, site)
-    return { user, site, url }
+    const stats = await getSiteStats(user, site)
+    return { user, site, url, stats }
 }
 
 export async function action({ params, request }: Route.ActionArgs) {
@@ -49,6 +51,26 @@ export default function SitePage({ loaderData }: Route.ComponentProps) {
                         {loaderData.user}
                     </a>
                 </h1>
+
+                {/* Site Statistics */}
+                <div className="grid grid-cols-4 gap-4 mb-8">
+                    <div className="bg-white rounded-lg shadow-md p-6 text-center">
+                        <div className="text-3xl font-bold text-indigo-600">{loaderData.stats.streakDays}</div>
+                        <div className="text-sm text-gray-600 mt-2">Days Streak</div>
+                    </div>
+                    <div className="bg-white rounded-lg shadow-md p-6 text-center">
+                        <div className="text-3xl font-bold text-blue-600">{loaderData.stats.views}</div>
+                        <div className="text-sm text-gray-600 mt-2">Times Viewed</div>
+                    </div>
+                    <div className="bg-white rounded-lg shadow-md p-6 text-center">
+                        <div className="text-3xl font-bold text-green-600">{loaderData.stats.resists}</div>
+                        <div className="text-sm text-gray-600 mt-2">Times Resisted</div>
+                    </div>
+                    <div className="bg-white rounded-lg shadow-md p-6 text-center">
+                        <div className="text-3xl font-bold text-red-600">{loaderData.stats.fails}</div>
+                        <div className="text-sm text-gray-600 mt-2">Times Failed</div>
+                    </div>
+                </div>
 
                 <div className="bg-white rounded-lg shadow-md p-8 flex gap-4">
                     <button
