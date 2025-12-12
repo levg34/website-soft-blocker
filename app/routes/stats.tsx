@@ -6,7 +6,7 @@ import { OverallStats, AdditionalMetrics, ActivityChart, LastFailureInfo, PageHe
 
 export async function loader({ params }: Route.LoaderArgs) {
     const user = params.user
-    if (!userExists(user)) {
+    if (!(await userExists(user))) {
         return redirect('/')
     }
     const detailedStats = await getUserDetailedStats(user)

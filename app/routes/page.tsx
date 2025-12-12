@@ -8,7 +8,7 @@ import { OverallStats, PageHeader } from '~/components'
 export async function loader({ params }: Route.LoaderArgs) {
     const user = params.user
     const site = params.site
-    if (!userHasTrackedSite(user, site)) {
+    if (!(await userHasTrackedSite(user, site))) {
         return redirect('/')
     }
     await addPageLoad(user, site)

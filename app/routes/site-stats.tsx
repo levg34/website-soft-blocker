@@ -7,7 +7,7 @@ import { OverallStats, AdditionalMetrics, ActivityChart, LastFailureInfo, PageHe
 export async function loader({ params }: Route.LoaderArgs) {
     const user = params.user
     const site = params.site
-    if (!userHasTrackedSite(user, site)) {
+    if (!(await userHasTrackedSite(user, site))) {
         return redirect('/')
     }
     const detailedStats = await getSiteDetailedStats(user, site)
