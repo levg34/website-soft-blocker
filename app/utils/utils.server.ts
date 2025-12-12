@@ -1,4 +1,10 @@
-import { recordEvent, getUserTrackedSite, getUserTrackedSites, getSiteEvents } from './db-utils.server'
+import {
+    recordEvent,
+    getUserTrackedSite,
+    getUserTrackedSites,
+    getSiteEvents,
+    getUserByUsername
+} from './db-utils.server'
 
 /**
  * Increment the visit count for a user.
@@ -24,6 +30,20 @@ export async function getUserSites(user: string): Promise<string[]> {
 
 export async function addPageLoad(username?: string, siteId?: string): Promise<void> {
     if (username && siteId) {
+        const user = await getUserByUsername(username)
+
+        const userExists = !!user
+
+        if (!userExists) {
+            console.warn(`User ${username} does not exist. Skipping page load event recording.`)
+            return
+        }
+
+        if (!user.trackedSites.map((s) => s.siteId).includes(siteId)) {
+            console.warn(`Site ${siteId} is not tracked for user ${username}. Skipping page load event recording.`)
+            return
+        }
+
         try {
             const recent = await getSiteEvents(username, siteId, 1)
             if (recent && recent.length > 0) {

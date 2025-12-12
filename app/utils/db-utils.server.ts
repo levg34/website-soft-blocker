@@ -78,13 +78,34 @@ export async function findOrCreateUser(username: string): Promise<UserDocument> 
     return user
 }
 
+export async function createUserOrFail(username: string): Promise<UserDocument> {
+    const collection = await getUsersCollection()
+    let user = await collection.findOne({ username })
+
+    if (user) throw new Error(`User already exists: ${username}`)
+
+    const result = await collection.insertOne({
+        _id: new ObjectId(),
+        username,
+        createdAt: new Date(),
+        trackedSites: []
+    } as UserDocument)
+
+    user = await collection.findOne({ _id: result.insertedId })
+    if (!user) {
+        throw new Error(`Failed to create user: ${username}`)
+    }
+
+    return user
+}
+
 /**
  * Get a user by username.
  */
-// export async function getUserByUsername(username: string): Promise<UserDocument | null> {
-//     const collection = await getUsersCollection()
-//     return collection.findOne({ username })
-// }
+export async function getUserByUsername(username: string): Promise<UserDocument | null> {
+    const collection = await getUsersCollection()
+    return collection.findOne({ username })
+}
 
 /**
  * Add a tracked site to a user's list.
@@ -103,7 +124,7 @@ export async function addTrackedSiteToUser(username: string, trackedSite: Tracke
  * Get all tracked sites for a user.
  */
 export async function getUserTrackedSites(username: string): Promise<TrackedSite[]> {
-    const user = await findOrCreateUser(username)
+    const user = await getUserByUsername(username)
     return user?.trackedSites || []
 }
 
@@ -111,7 +132,7 @@ export async function getUserTrackedSites(username: string): Promise<TrackedSite
  * Get a specific tracked site for a user.
  */
 export async function getUserTrackedSite(username: string, siteId: string): Promise<TrackedSite | undefined> {
-    const user = await findOrCreateUser(username)
+    const user = await getUserByUsername(username)
     return user?.trackedSites.find((site) => site.siteId === siteId)
 }
 
