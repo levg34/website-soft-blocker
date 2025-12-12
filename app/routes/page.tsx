@@ -1,13 +1,16 @@
 import { addPageLoad, addSiteVisit, addStayeFocus, getUserUrl } from '~/utils/utils.server'
 import type { Route } from './+types/page'
-import { useFetcher, Link } from 'react-router'
+import { useFetcher, redirect } from 'react-router'
 import { capitalizeFirstLetter } from '~/utils/utils'
-import { getSiteStats } from '~/utils/db-utils.server'
+import { getSiteStats, userHasTrackedSite } from '~/utils/db-utils.server'
 import { OverallStats, PageHeader } from '~/components'
 
 export async function loader({ params }: Route.LoaderArgs) {
     const user = params.user
     const site = params.site
+    if (!userHasTrackedSite(user, site)) {
+        return redirect('/')
+    }
     await addPageLoad(user, site)
     const url = await getUserUrl(user, site)
     const stats = await getSiteStats(user, site)

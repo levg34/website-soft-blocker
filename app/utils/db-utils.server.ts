@@ -107,6 +107,18 @@ export async function getUserByUsername(username: string): Promise<UserDocument 
     return collection.findOne({ username })
 }
 
+export async function userExists(username: string): Promise<boolean> {
+    const collection = await getUsersCollection()
+    const count = await collection.countDocuments({ username })
+    return count > 0
+}
+
+export async function userHasTrackedSite(username: string, siteId: string): Promise<boolean> {
+    const user = await getUserByUsername(username)
+    if (!user) return false
+    return user.trackedSites.some((site) => site.siteId === siteId)
+}
+
 /**
  * Add a tracked site to a user's list.
  */

@@ -1,13 +1,14 @@
-import { addPageLoad } from '~/utils/utils.server'
 import type { Route } from './+types/stats'
-import { getUserDetailedStats } from '~/utils/db-utils.server'
-import { Link } from 'react-router'
+import { getUserDetailedStats, userExists } from '~/utils/db-utils.server'
+import { Link, redirect } from 'react-router'
 import { capitalizeFirstLetter } from '~/utils/utils'
 import { OverallStats, AdditionalMetrics, ActivityChart, LastFailureInfo, PageHeader, StreakStats } from '~/components'
 
 export async function loader({ params }: Route.LoaderArgs) {
     const user = params.user
-    await addPageLoad(user)
+    if (!userExists(user)) {
+        return redirect('/')
+    }
     const detailedStats = await getUserDetailedStats(user)
     return { user, detailedStats }
 }

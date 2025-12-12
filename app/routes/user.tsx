@@ -2,12 +2,16 @@ import { addPageLoad, getUserSites } from '~/utils/utils.server'
 import { getUserStreakBadges } from '~/utils/badges.server'
 import type { Route } from './+types/user'
 import { capitalizeFirstLetter } from '~/utils/utils'
-import { Form, Link } from 'react-router'
-import { getUserStats } from '~/utils/db-utils.server'
+import { Form, Link, redirect } from 'react-router'
+import { getUserStats, userExists } from '~/utils/db-utils.server'
 import { BadgeCard, OverallStats, PageHeader } from '~/components'
 
 export async function loader({ params }: Route.LoaderArgs) {
     const user = params.user
+    const userInDb = await userExists(user)
+    if (!userInDb) {
+        return redirect('/')
+    }
     await addPageLoad(user)
     const sites = await getUserSites(user)
     const stats = await getUserStats(user)

@@ -1,14 +1,15 @@
-import { addPageLoad } from '~/utils/utils.server'
 import type { Route } from './+types/site-stats'
-import { getSiteDetailedStats } from '~/utils/db-utils.server'
-import { Link } from 'react-router'
+import { getSiteDetailedStats, userHasTrackedSite } from '~/utils/db-utils.server'
+import { redirect } from 'react-router'
 import { capitalizeFirstLetter } from '~/utils/utils'
 import { OverallStats, AdditionalMetrics, ActivityChart, LastFailureInfo, PageHeader, StreakStats } from '~/components'
 
 export async function loader({ params }: Route.LoaderArgs) {
     const user = params.user
     const site = params.site
-    await addPageLoad(user)
+    if (!userHasTrackedSite(user, site)) {
+        return redirect('/')
+    }
     const detailedStats = await getSiteDetailedStats(user, site)
     return { user, site, detailedStats }
 }
